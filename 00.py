@@ -1,6 +1,7 @@
 # 导入库文件
 from bs4 import BeautifulSoup
 import time
+import lxml
 import requests
 
 
@@ -31,8 +32,6 @@ def get_links(usr):
     :param usr:
     """
 
-    # page_list > ul > li:nth-child(1) > div.result_btm_con.lodgeunitname
-    # page_list > ul > li:nth-child(2) > div.result_btm_con.lodgeunitname > div > a
 
     r = requests.get(usr, headers=_headers)
     soup = BeautifulSoup(r.text, "lxml")
@@ -44,8 +43,11 @@ def get_links(usr):
 
 
 def get_info(url):
+
     wb_data = requests.get(url, headers=_headers)
+
     soup = BeautifulSoup(wb_data.text, "lxml")
+
     tittles = soup.select("body > div.wrap.clearfix.con_bg > div.con_l > div.pho_info > h4")
     addresses = soup.select("body > div.wrap.clearfix.con_bg > div.con_l > div.pho_info > p > span")
     prices = soup.select("#pricePart > div.day_l > span")
@@ -54,4 +56,21 @@ def get_info(url):
     sexs = soup.select("#floatRightBox > div.js_box.clearfix > div.member_pic > div")
 
     for tittle, addresse, price, img, name, sex in zip(tittles, addresses, prices, imgs, names, sexs):
-        pass
+        data = {
+            "tittle" :tittle.get_text().strip(),
+            "addresse" :addresse.get_text().strip(),
+            "price" :price.get_text(),
+            "img" :img.get("url"),
+            "name" :name.get_text(),
+            "sex" :_sex(sex.get("class"))
+        }
+
+        print(data)
+
+if __name__ == '__name__':
+    urls = [''.format(number)
+            for number in range(1,11)]
+
+    for single in urls:
+        get_links(single)
+        time.sleep(2)
