@@ -61,11 +61,11 @@ def get_info(url):
     for tittle, addresse, price, img, name, sex in zip(tittles, addresses, prices, imgs, names, sexs):
         data = {
             "标题": tittle.get_text().strip(),
+            "用户": name.get_text(),
+            "性别": _sex(sex.get("class")),
             "地址": addresse.get_text().strip(),
             "租金": price.get_text(),
-            "图片": img.get("src"),
-            "用户": name.get_text(),
-            "性别": _sex(sex.get("class"))
+            "图片": img.get("src")
         }
 
         print(data)
