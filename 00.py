@@ -68,8 +68,7 @@ def get_info(url):
 
 
 
-urls = ['http://bj.xiaozhu.com/search-duanzufang-p{}-0/'.format(number)
-        for number in range(1,11)]
+urls = ["http://bj.xiaozhu.com/search-duanzufang-p{}-0/".format(number) for number in range(1,11)]
 
 for single in urls:
 
@@ -77,18 +76,17 @@ for single in urls:
 
     r = requests.get(single, headers=_headers)
     soup = BeautifulSoup(r.text, "lxml")
-    # links = soup.select("#page_list > ul > li > a")
-    links = soup.select("# page_list > ul > li:nth-of-type(1) > div.result_btm_con.lodgeunitname > span.result_img > a")
-
+    links = soup.select("#page_list > ul > li > a")
+    # links = soup.select("# page_list > ul > li:nth-of-type(1) > div.result_btm_con.lodgeunitname > span.result_img > a")
 
     for link in links:
 
-        print(link)
+        print(link.get("href"))
 
         # herf = link.get("herf")
         # get_info(herf)
 
-        wb_data = requests.get(link, headers=_headers)
+        wb_data = requests.get(link.get("href"), headers=_headers)
 
         soup = BeautifulSoup(wb_data.text, "lxml")
 
