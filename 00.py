@@ -1,7 +1,8 @@
 # 导入库文件
-import requests
-import time
 from bs4 import BeautifulSoup
+import time
+import requests
+
 
 # 请求头文件
 _headers = {
@@ -53,6 +54,4 @@ def get_info(url):
     sexs = soup.select("#floatRightBox > div.js_box.clearfix > div.member_pic > div")
 
     for tittle, addresse, price, img, name, sex in zip(tittles, addresses, prices, imgs, names, sexs):
-        data = {
-            # "tittle" : tittle.get_text().
-        }
+        pass
