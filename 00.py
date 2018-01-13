@@ -1,14 +1,13 @@
 # 导入库文件
 from bs4 import BeautifulSoup
 import time
-import lxml
 import requests
 
 
 # 请求头文件
 _headers = {
-            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) '
-                         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
 }
 
 
@@ -67,10 +66,47 @@ def get_info(url):
 
         print(data)
 
-if __name__ == '__name__':
-    urls = [''.format(number)
-            for number in range(1,11)]
 
-    for single in urls:
-        get_links(single)
-        time.sleep(2)
+
+urls = ['http://bj.xiaozhu.com/search-duanzufang-p{}-0/'.format(number)
+        for number in range(1,11)]
+
+for single in urls:
+
+    # get_links(single)
+
+    r = requests.get(single, headers=_headers)
+    soup = BeautifulSoup(r.text, "lxml")
+    links = soup.select("#page_list > ul > li > a")
+
+    for link in links:
+
+        print(link)
+
+        # herf = link.get("herf")
+        # get_info(herf)
+
+        wb_data = requests.get(link, headers=_headers)
+
+        soup = BeautifulSoup(wb_data.text, "lxml")
+
+        tittles = soup.select("body > div.wrap.clearfix.con_bg > div.con_l > div.pho_info > h4")
+        addresses = soup.select("body > div.wrap.clearfix.con_bg > div.con_l > div.pho_info > p > span")
+        prices = soup.select("#pricePart > div.day_l > span")
+        imgs = soup.select("#curBigImage")
+        names = soup.select("#floatRightBox > div.js_box.clearfix > div.w_240 > h6 > a")
+        sexs = soup.select("#floatRightBox > div.js_box.clearfix > div.member_pic > div")
+
+        for tittle, addresse, price, img, name, sex in zip(tittles, addresses, prices, imgs, names, sexs):
+            data = {
+                "tittle": tittle.get_text().strip(),
+                "addresse": addresse.get_text().strip(),
+                "price": price.get_text(),
+                "img": img.get("url"),
+                "name": name.get_text(),
+                "sex": _sex(sex.get("class"))
+            }
+
+            print(data)
+
+    time.sleep(2)
