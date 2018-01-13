@@ -32,16 +32,18 @@ for single in urls:
     soup = BeautifulSoup(r.text, "lxml")
     links = soup.select("#page_list > ul > li > a")
 
-    for link in links:
+    for link_url in links:
 
-        print(link.get("href"))
+        # print(link.get("href"))
 
-        wb_data = requests.get(link.get("href"), headers=_headers)
+        wb_data = requests.get(link_url.get("href"), headers=_headers)
 
         soup = BeautifulSoup(wb_data.text, "lxml")
 
-        tittles = soup.select("body > div.wrap.clearfix.con_bg > div.con_l > div.pho_info > h4")
-        addresses = soup.select("body > div.wrap.clearfix.con_bg > div.con_l > div.pho_info > p > span")
+        # print(soup)
+
+        tittles = soup.select("div.pho_info > h4")
+        addresses = soup.select("span.pr5")
         prices = soup.select("#pricePart > div.day_l > span")
         imgs = soup.select("#curBigImage")
         names = soup.select("#floatRightBox > div.js_box.clearfix > div.w_240 > h6 > a")
@@ -49,14 +51,15 @@ for single in urls:
 
         for tittle, addresse, price, img, name, sex in zip(tittles, addresses, prices, imgs, names, sexs):
             data = {
-                "tittle": tittle.get_text().strip(),
-                "addresse": addresse.get_text().strip(),
-                "price": price.get_text(),
-                "img": img.get("url"),
-                "name": name.get_text(),
-                "sex": _sex(sex.get("class"))
+                "标题": tittle.get_text().strip(),
+                "地址": addresse.get_text().strip(),
+                "租金": price.get_text(),
+                "图片": img.get("src"),
+                "用户": name.get_text(),
+                "性别": _sex(sex.get("class"))
             }
 
             print(data)
+
 
     time.sleep(2)
