@@ -77,7 +77,9 @@ for single in urls:
 
     r = requests.get(single, headers=_headers)
     soup = BeautifulSoup(r.text, "lxml")
-    links = soup.select("#page_list > ul > li > a")
+    # links = soup.select("#page_list > ul > li > a")
+    links = soup.select("# page_list > ul > li:nth-of-type(1) > div.result_btm_con.lodgeunitname > span.result_img > a")
+
 
     for link in links:
 
