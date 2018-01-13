@@ -54,5 +54,5 @@ def get_info(url):
 
     for tittle, addresse, price, img, name, sex in zip(tittles, addresses, prices, imgs, names, sexs):
         data = {
-            "tittle" : tittle.get_text().
+            # "tittle" : tittle.get_text().
         }
