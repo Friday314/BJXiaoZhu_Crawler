@@ -39,7 +39,6 @@ def get_links(url):
         get_info(link_url)
 
 
-
 def get_info(url):
     """
     定义获取网页信息的函数
@@ -75,7 +74,6 @@ def get_info(url):
 if __name__ == "__main__":
 
     #构造多页URL
-
     urls = ["http://bj.xiaozhu.com/search-duanzufang-p{}-0/".format(number) for number in range(1,11)]
 
     for single in urls:
