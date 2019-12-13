@@ -3,16 +3,14 @@ from bs4 import BeautifulSoup
 import time
 import requests
 
-
 # 请求头文件
 _headers = {
-            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
 }
 
 
 def _sex(class_name):
-
     """
     定义判断用户姓名的函数
     :rtype: object
@@ -34,7 +32,6 @@ def get_links(url):
     links = soup.select("#page_list > ul > li > a")
 
     for link_url in links:
-
         # print(link.get("href"))
         get_info(link_url)
 
@@ -73,11 +70,10 @@ def get_info(url):
 # main 函数
 if __name__ == "__main__":
 
-    #构造多页URL
-    urls = ["http://bj.xiaozhu.com/search-duanzufang-p{}-0/".format(number) for number in range(1,11)]
+    # 构造多页URL
+    urls = ["http://bj.xiaozhu.com/search-duanzufang-p{}-0/".format(number) for number in range(1, 11)]
 
     for single in urls:
-
         get_links(single)
 
         # 睡眠两秒
